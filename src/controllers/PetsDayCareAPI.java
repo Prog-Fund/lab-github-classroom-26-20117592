@@ -10,73 +10,73 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class NewsFeed {
+public class PetsDayCareAPI {
 
-    private ArrayList<Post> posts;
+    private ArrayList<Pet> pets;
 
-    public NewsFeed() {
-        posts = new ArrayList<Post>();
+    public PetsDayCareAPI() {
+        pets = new ArrayList<Pet>();
     }
 
-    public boolean addPost(Post post) {
-        return posts.add(post);
+    public boolean addPet(Pet pet) {
+        return pets.add(pet);
     }
 
-    public String show() {
+    public String listPets() {
         String str = "";
 
-        for(Post post: posts) {
-            str += posts.indexOf(post) + ": " + post.displayCondensed() + "\n";
+        for(Pet pet: pets) {
+            str += pets.indexOf(pet) + ": " + pet.toString() + "\n";
         }
 
         if (str.isEmpty()){
-            return "No Posts";
+            return "No Pets";
         }
         else {
             return str;
         }
     }
 
-    public String showPhotoPosts() {
+    public String listParrots() {
         String str = "";
 
-        for(Post post: posts) {
-            if (post instanceof PhotoPost) {
-                str += posts.indexOf(post) + ": " + post.display() + "\n";
+        for(Pet pet: pets) {
+            if (pet instanceof Parrot) {
+                str += pets.indexOf(pet) + ": " + pet.toString() + "\n";
             }
         }
 
         if (str.isEmpty()){
-            return "No Photo Posts";
+            return "No Parrots";
         }
         else {
             return str;
         }
     }
 
-    public String showMessagePosts() {
+    public String listDogs() {
         String str = "";
 
-        for(Post post: posts) {
-            if (post instanceof MessagePost) {
-                str += posts.indexOf(post) + ": " + post.display() + "\n";
+        for(Pet pet: pets) {
+            if (pet instanceof Dog) {
+                str += pets.indexOf(pet) + ": " + pet.toString() + "\n";
             }
         }
 
         if (str.isEmpty()){
-            return "No Message Posts";
+            return "No Dogs";
         }
         else {
             return str;
         }
     }
 
-    public String showEventPosts() {
+    public String listCats() {
         String str = "";
 
-        for(Post post: posts) {
-            if (post instanceof EventPost) {
-                str += posts.indexOf(post) + ": " + post.display() + "\n";
+        for(Pet pet: pets) {
+            if (pet instanceof Cat) {
+                str += pets.indexOf(pet) + ": " + pet.toString() + "\n";
             }
         }
 
@@ -88,22 +88,23 @@ public class NewsFeed {
         }
     }
 
-    public Post deletePost(int indexToDelete) {
+    public Pet deletePet(int indexToDelete) {
         if (isValidIndex(indexToDelete)) {
-            return posts.remove(indexToDelete);
+            return pets.remove(indexToDelete);
         }
         return null;
     }
 
-    public boolean updateMessagePost(int indexToUpdate, String author, String message) {
+    public boolean updateDog(int indexToUpdate, String breed, boolean dangerousBreed) {
         //find the object by the index number
-        Post foundMessage = findPost(indexToUpdate);
+        Pet foundPet = findPet(indexToUpdate);
 
         //if the object exists, use the details passed in the parameters to
         //update the found object in the ArrayList.
-        if ((foundMessage != null) && (foundMessage instanceof MessagePost)) {
-            foundMessage.setAuthor(author);
-            ((MessagePost) foundMessage).setMessage(message);
+        if ((foundPet != null) && (foundPet instanceof Dog)) {
+            Dog foundDog = (Dog) foundPet;
+            foundDog.setBreed(breed);
+            foundDog.setDangerousBreed(dangerousBreed);
             return true;
         }
 
@@ -111,16 +112,14 @@ public class NewsFeed {
         return false;
     }
 
-    public boolean updatePhotoPost(int indexToUpdate, String author, String caption, String filename) {
+    public boolean updateParrot(int indexToUpdate, String vocabularySize) {
         //find the object by the index number
-        Post foundPost = findPost(indexToUpdate);
+        Pet foundPet = findPet(indexToUpdate);
 
         //if the object exists, use the details passed in the parameters to
         //update the found object in the ArrayList.
-        if ((foundPost != null) && (foundPost instanceof PhotoPost)){
-            foundPost.setAuthor(author);
-            ((PhotoPost) foundPost).setCaption(caption);
-            ((PhotoPost) foundPost).setFilename(filename);
+        if ((foundPet != null) && (foundPet instanceof Parrot)){
+            ((Parrot) foundPet).setVocabularySize(vocabularySize);
             return true;
         }
 
@@ -128,16 +127,15 @@ public class NewsFeed {
         return false;
     }
 
-    public boolean updateEventPost(int indexToUpdate, String author, String eventName, double eventCost) {
+    public boolean updateCat(int indexToUpdate, String favouriteToy, boolean indoorCat) {
         //find the object by the index number
-        Post foundPost = findPost(indexToUpdate);
+        Pet foundPet = findPet(indexToUpdate);
 
         //if the object exists, use the details passed in the parameters to
         //update the found object in the ArrayList.
-        if ((foundPost != null) && (foundPost instanceof EventPost)){
-            foundPost.setAuthor(author);
-            ((EventPost) foundPost).setEventName(eventName);
-            ((EventPost) foundPost).setEventCost(eventCost);
+        if ((foundPet != null) && (foundPet instanceof Cat)){
+            ((Cat) foundPet).setFavouriteToy(favouriteToy);
+            ((Cat) foundPet).setIndoorCat(indoorCat);
             return true;
         }
 
@@ -145,48 +143,48 @@ public class NewsFeed {
         return false;
     }
 
-    public Post findPost(int index) {
+    public Pet findPet(int index) {
         if (isValidIndex(index)) {
-            return posts.get(index);
+            return pets.get(index);
         }
         return null;
     }
 
-    public int numberOfPosts() {
-        return posts.size();
+    public int numberOfPets() {
+        return pets.size();
     }
 
-    public int numberOfMessagePosts() {
+    public int numberOfDogs() {
         int number = 0;
-        for (Post post: posts){
-            if (post instanceof MessagePost){
+        for (Pet pet: pets){
+            if (pet instanceof Dog){
                 number++;
             }
         }
         return number;
     }
 
-    public int numberOfPhotoPosts() {
+    public int numberOfParrots() {
         int number = 0;
-        for (Post post: posts){
-            if (post instanceof PhotoPost){
+        for (Pet pet: pets){
+            if (pet instanceof Parrot){
                 number++;
             }
         }
         return number;
     }
 
-    public int numberOfEventPosts() {
+    public int numberOfCats() {
         int number = 0;
-        for (Post post: posts){
-            if (post instanceof EventPost){
+        for (Pet pet: pets){
+            if (pet instanceof Cat){
                 number++;
             }
         }
         return number;
     }
 
-    public void likeAPost(int index) {
+  /** public void likeAPost(int index) {
         Post post = null;
         if (isValidIndex(index)) {
             post = posts.get(index);
@@ -214,7 +212,7 @@ public class NewsFeed {
     @SuppressWarnings("unchecked")
     public void load() throws Exception {
         //list of classes that you wish to include in the serialisation, separated by a comma
-        Class<?>[] classes = new Class[] { EventPost.class, MessagePost.class, PhotoPost.class, Post.class};
+        Class<?>[] classes = new Class[] { Dog.class, Cat.class, Parrot.class, Mammal.class, Pet.class, Owner.class, Bird.class};
 
         //setting up the xstream object with default security and the above classes
         XStream xstream = new XStream(new DomDriver());
@@ -222,8 +220,8 @@ public class NewsFeed {
         xstream.allowTypes(classes);
 
         //doing the actual serialisation to an XML file
-        ObjectInputStream in = xstream.createObjectInputStream(new FileReader("posts.xml"));
-        posts = (ArrayList<Post>) in.readObject();
+        ObjectInputStream in = xstream.createObjectInputStream(new FileReader("pets.xml"));
+        pets = (ArrayList<Pet>) in.readObject();
         in.close();
     }
 
@@ -235,35 +233,36 @@ public class NewsFeed {
      */
     public void save() throws Exception {
         XStream xstream = new XStream(new DomDriver());
-        ObjectOutputStream out = xstream.createObjectOutputStream(new FileWriter("posts.xml"));
-        out.writeObject(posts);
+        ObjectOutputStream out = xstream.createObjectOutputStream(new FileWriter("pets.xml"));
+        out.writeObject(pets);
         out.close();
 
     }
 
     public boolean isValidIndex(int index) {
-        return (index >= 0) && (index < posts.size());
+        return (index >= 0) && (index < pets.size());
     }
 
-    public boolean isValidMessagePostIndex(int index) {
+    public boolean isValidDogIndex(int index) {
         if (isValidIndex(index)) {
-            return (posts.get(index)) instanceof MessagePost;
+            return (pets.get(index)) instanceof Dog;
         }
         return false;
     }
 
-    public boolean isValidPhotoPostIndex(int index) {
+    public boolean isValidParrotIndex(int index) {
         if (isValidIndex(index)) {
-            return (posts.get(index)) instanceof PhotoPost;
+            return (pets.get(index)) instanceof Parrot;
         }
         return false;
     }
 
-    public boolean isValidEventPostIndex(int index) {
+    public boolean isValidCatIndex(int index) {
         if (isValidIndex(index)) {
-            return (posts.get(index)) instanceof EventPost;
+            return (pets.get(index)) instanceof Cat;
         }
         return false;
     }
-
+//
+     //
 }
